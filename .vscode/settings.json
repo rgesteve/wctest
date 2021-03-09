@@ -1,0 +1,9 @@
+{
+    // Apparently I have to turn all off, any one of them
+    // will set off some action on save.
+    "go.buildOnSave": "off",
+    "go.coverOnSave": false,
+    "go.lintOnSave": "off",
+    "go.testOnSave": false,
+    "go.vetOnSave": "off"
+}
