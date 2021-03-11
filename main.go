@@ -9,6 +9,7 @@ import ("bufio"
 func main() {
 	fmt.Println(count(os.Stdin))
 	fmt.Println("Done!")
+	os.Exit(0)
 }
 
 func count(r io.Reader) int {
