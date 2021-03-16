@@ -10,6 +10,6 @@ RUN export GO111MODULE=on \
         github.com/uudashr/gopkgs/v2/cmd/gopkgs \
         github.com/ramya-rao-a/go-outline \
         github.com/go-delve/delve/cmd/dlv \
-        honnef.co/go/tools/staticcheck
+        honnef.co/go/tools/cmd/staticcheck
 
 CMD [ "/bin/bash" ]
