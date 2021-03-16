@@ -1,6 +1,7 @@
 {
     "name" : "Go client/server project layout",
     "dockerFile" : "Dockerfile",
+    "remoteUser": "vscode",
     "settings" : {
         "terminal.integrated.shell.linux": "/bin/bash"
     },

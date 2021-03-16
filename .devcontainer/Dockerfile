@@ -1,8 +1,13 @@
 FROM golang:1.16
 
+# This Dockerfile adds a non-root user with sudo access. Update the “remoteUser” property in
+# devcontainer.json to use it. More info: https://aka.ms/vscode-remote/containers/non-root-user.
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
 # Seems to be a Debian 10 base (is this the official golang image from Docker hub?)
 # go binary is installed in /usr/local/go/bin/go
-
 RUN apt-get update -y
 RUN export GO111MODULE=on \
     && go get -v -u \
