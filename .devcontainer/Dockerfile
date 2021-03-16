@@ -24,6 +24,9 @@ RUN groupadd --gid $USER_GID $USERNAME \
 RUN groupadd -g 800 docker
 RUN usermod -a -G docker vscode
 
+# `make` may be already installed
+RUN apt-get install -y make protobuf-compiler
+
 RUN export GO111MODULE=on \
     && go get -v -u \
         golang.org/x/tools/gopls \
@@ -33,4 +36,4 @@ RUN export GO111MODULE=on \
         honnef.co/go/tools/cmd/staticcheck
 
 USER $USERNAME
-#CMD [ "/bin/bash" ]
+
