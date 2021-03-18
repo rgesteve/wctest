@@ -9,9 +9,11 @@ import (
 	"io"
 	"os"
 	"net"
+	"net/http"
 	"encoding/json"
 )
 
+/*
 type location struct {
 	lat float64
 	long float64
@@ -22,6 +24,14 @@ type City struct {
 	Name string `json:"name"`
 	Location string `json:"location"`
 }
+*/
+
+type Config struct {
+	Host string `json:host`,
+	Port uint16 `json:port`
+}
+
+const addr = "127.0.0.1:7070"
 
 func init() {
 	log.SetOutput(os.Stdout)
@@ -38,11 +48,19 @@ func main() {
 	if *shouldCount == true {
 		fmt.Println("Should be counting")
 
+		/*
+		s := createServer(addr)
+		go s.ListenAndServe()
+		*/
+
+		/*
 		myCity := City { Name: "Paris", Location: "France"}
 		fmt.Printf("The city is %v.\n", myCity)
 		bytes, err := json.Marshal(myCity)
 		exitOnError(err)
 		fmt.Println(string(bytes))
+		*/
+
 		//fmt.Println(count(os.Stdin))
 	} else {
 		conn, _ := net.Dial("tcp", "golang.org:80")
@@ -70,4 +88,17 @@ func count(r io.Reader) int {
 		wc++
 	}
 	return wc
+}
+
+type StringServer string
+
+func (s StringServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	rw.Write([]byte(string(s)))
+}
+
+func createServer(addr string) http.Server {
+	return http.Server {
+		Addr : addr,
+		Handler : StringServer("Hello, world!"),
+	}
 }
