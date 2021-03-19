@@ -7,10 +7,11 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
-	"net"
+//	"net"
 	"net/http"
-	"encoding/json"
+//	"encoding/json"
 )
 
 /*
@@ -27,11 +28,12 @@ type City struct {
 */
 
 type Config struct {
-	Host string `json:host`,
+	Host string `json:host`
 	Port uint16 `json:port`
 }
 
-const addr = "127.0.0.1:7070"
+//const addr = "127.0.0.1:7070" // this doesn't work with `http.Get`
+const addr = "localhost:7070"
 
 func init() {
 	log.SetOutput(os.Stdout)
@@ -41,17 +43,20 @@ func init() {
 func main() {
 	log.Println("Parsing command line options")
 	shouldCount := flag.Bool("count", false, "In counting mode (query mode if not specified)")
-	flag.Parse()
+	//flag.Parse()
 	//dict := make(map[string]int){"one":1, "two":2,"three":3}
 
-	log.Println("Dispatching to actual functionality")
+	log.Println("Starting the server")
+
+	go func() {
+        log.Printf("Serving http at %s\n", addr)
+		s := createServer(addr)
+		err := s.ListenAndServe()
+        if err != nil { panic (err) }
+    }()	
+	
 	if *shouldCount == true {
 		fmt.Println("Should be counting")
-
-		/*
-		s := createServer(addr)
-		go s.ListenAndServe()
-		*/
 
 		/*
 		myCity := City { Name: "Paris", Location: "France"}
@@ -63,10 +68,25 @@ func main() {
 
 		//fmt.Println(count(os.Stdin))
 	} else {
-		conn, _ := net.Dial("tcp", "golang.org:80")
-		fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n")
-		status, _ :=  bufio.NewReader(conn).ReadString('\n')
+		log.Println("Issuing http request to ", addr)
+		
+		r, err := http.Get("http://" + addr + "/")
+		if err != nil {
+			log.Println("Got an error: ", err.Error())
+			os.Exit(1)
+		}
+		log.Println("The status is [", r.Status, "]")
+		
+		defer r.Body.Close()
+		body, _ := ioutil.ReadAll(r.Body)
+		fmt.Println(string(body))
+		
+		/*
+		conn, _ := net.Dial("tcp", addr)
+		fmt.Fprintf(conn, "GET / HTTP/1.1\r\nHost:localhost:7070\r\n\r\n")
+		status, _ := bufio.NewReader(conn).ReadString('\n')
 		fmt.Println(status)
+		*/
 	}	
 
 	fmt.Println("Done!")
