@@ -7,10 +7,11 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
+//	"io/ioutil"
 	"os"
 //	"net"
 	"net/http"
+	"time"
 //	"encoding/json"
 )
 
@@ -46,6 +47,7 @@ func main() {
 	//flag.Parse()
 	//dict := make(map[string]int){"one":1, "two":2,"three":3}
 
+	/*
 	log.Println("Starting the server")
 
 	go func() {
@@ -54,6 +56,7 @@ func main() {
 		err := s.ListenAndServe()
         if err != nil { panic (err) }
     }()	
+	*/
 	
 	if *shouldCount == true {
 		fmt.Println("Should be counting")
@@ -68,6 +71,7 @@ func main() {
 
 		//fmt.Println(count(os.Stdin))
 	} else {
+		/*
 		log.Println("Issuing http request to ", addr)
 		
 		r, err := http.Get("http://" + addr + "/")
@@ -80,7 +84,10 @@ func main() {
 		defer r.Body.Close()
 		body, _ := ioutil.ReadAll(r.Body)
 		fmt.Println(string(body))
-		
+		*/
+
+		go fmt.Println("Hello, playground")
+		time.Sleep(time.Second)
 		/*
 		conn, _ := net.Dial("tcp", addr)
 		fmt.Fprintf(conn, "GET / HTTP/1.1\r\nHost:localhost:7070\r\n\r\n")
